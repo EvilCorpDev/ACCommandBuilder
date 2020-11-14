@@ -53,7 +53,7 @@ public class App {
     }
 
     private static byte convertUnsignedToSigned(int input) {
-        return (byte) input;
+        return (byte) input; // same as input > 127 ? input - 256 : 256;
     }
 
     private static int getCRC(byte[] inputData, int length) {
