@@ -14,6 +14,8 @@ public class ACCommand {
     private boolean turboMode;
     private boolean ecoMode;
     private byte correlationId;
+    private boolean moveWingsVertically;
+    private boolean moveWingsHorizontally;
 
     public ACCommand setBoot(boolean boot) {
         this.boot = boot;
@@ -56,6 +58,22 @@ public class ACCommand {
         return this;
     }
 
+    public ACCommand setMoveWingsVertically(boolean moveWingsVertically) {
+        if (this.moveWingsHorizontally && moveWingsVertically) {
+            throw new IllegalArgumentException("Can't set both horizontal and vertical movement");
+        }
+        this.moveWingsVertically = moveWingsVertically;
+        return this;
+    }
+
+    public ACCommand setMoveWingsHorizontally(boolean moveWingsHorizontally) {
+        if (this.moveWingsVertically && moveWingsHorizontally) {
+            throw new IllegalArgumentException("Can't set both horizontal and vertical movement");
+        }
+        this.moveWingsHorizontally = moveWingsHorizontally;
+        return this;
+    }
+
     public int[] toBytes() {
         int[] bytes = new int[CMD_BODY_LENGTH];
 
@@ -66,7 +84,7 @@ public class ACCommand {
         bytes[4] = 127;
         bytes[5] = 127;
         bytes[6] = 0;
-        bytes[7] = 48; //relates to wind direction
+        bytes[7] = moveWingsVertically ? 60 : moveWingsHorizontally ? 51 : 48; //relates to wind direction
         bytes[8] = turboMode ? 32 : 0;
         bytes[9] = ecoMode ? 128 : 0;
         bytes[10] = turboMode ? 2 : 0;

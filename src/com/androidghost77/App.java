@@ -5,7 +5,6 @@ import com.androidghost77.enums.OperationType;
 import com.androidghost77.model.ACCommand;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class App {
@@ -20,12 +19,13 @@ public class App {
 
         int[] acCommand = new ACCommand().setCorrelationId((byte)52)
                 .setBoot(true)
-                .setFanMode(FanMode.MIDDLE)
-                .setOperationType(OperationType.HEAT)
-                .setTemperature(29)
+                .setFanMode(FanMode.LOW)
+                .setOperationType(OperationType.IDLE)
+                .setTemperature(30)
+                .setMoveWingsVertically(false)
                 .toBytes();
 
-        System.out.println(Arrays.stream(createUnsignedCommand(acCommand, CMD_LENGTH)).mapToObj(String::valueOf).collect(Collectors.joining(" ")));
+        System.out.println(Arrays.toString(createUnsignedCommand(acCommand, CMD_LENGTH)));
     }
 
     public static int[] createUnsignedCommand(int[] cmdBody, int outputLength) {
